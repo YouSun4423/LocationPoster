@@ -8,23 +8,21 @@
 import Foundation
 import Security
 
-class DeviceUUIDService {
-    private static let service = "jp.mnb.LocationPoster.LocationPoster"
-    private static let account = "persistent_device_uuid"
+class DeviceUUIDService: DeviceUUIDProtocol {
+    private let service = "jp.mnb.LocationPoster.LocationPoster"
+    private let account = "persistent_device_uuid"
 
-    static func get() -> String {
-        // 既に保存済みならそれを返す
+    func get() -> String {
         if let data = load(), let uuid = String(data: data, encoding: .utf8) {
             return uuid
         }
 
-        // なければ新しく生成して保存
         let newUUID = UUID().uuidString
         save(data: Data(newUUID.utf8))
         return newUUID
     }
 
-    private static func save(data: Data) {
+    private func save(data: Data) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -34,7 +32,7 @@ class DeviceUUIDService {
         SecItemAdd(query as CFDictionary, nil)
     }
 
-    private static func load() -> Data? {
+    private func load() -> Data? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,

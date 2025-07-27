@@ -10,8 +10,10 @@ import SwiftUI
 @main
 struct LocationPosterApp: App {
     var body: some Scene {
+        // 本番環境 ... AppDependencyFactory.makeViewModel()
+        // Mockテスト ... AppDependencyFactory.makeMockViewModel()
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: AppDependencyFactory.makeMockViewModel())
         }
     }
 }

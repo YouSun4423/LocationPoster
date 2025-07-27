@@ -6,7 +6,7 @@
 //
 import Foundation
 
-class NetworkService {
+class NetworkService: NetworkServiceProtocol {
     func post(locationData: LocationData, to url: String) {
         guard let endpoint = URL(string: url) else { return }
         var request = URLRequest(url: endpoint)

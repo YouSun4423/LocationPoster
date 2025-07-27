@@ -37,6 +37,16 @@
 			);
 			target = 044360482E3673D50078BD79 /* LocationPoster */;
 		};
+		0443610E2E36863C0078BD79 /* Exceptions for "LocationPoster" folder in "LocationPosterTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mocks/MockAltitudeService.swift,
+				Mocks/MockLocationService.swift,
+				Mocks/MockNetworkService.swift,
+				Mocks/MockUUIDProvider.swift,
+			);
+			target = 044360552E3673D70078BD79 /* LocationPosterTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +54,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				044360742E3675050078BD79 /* Exceptions for "LocationPoster" folder in "LocationPoster" target */,
+				0443610E2E36863C0078BD79 /* Exceptions for "LocationPoster" folder in "LocationPosterTests" target */,
 			);
 			path = LocationPoster;
 			sourceTree = "<group>";
@@ -471,7 +482,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J3W4U74QVY;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.mnb.LocationPoster.LocationPosterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -490,7 +501,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J3W4U74QVY;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.mnb.LocationPoster.LocationPosterTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -508,6 +519,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J3W4U74QVY;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.mnb.LocationPoster.LocationPosterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -525,6 +537,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = J3W4U74QVY;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = jp.mnb.LocationPoster.LocationPosterUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
