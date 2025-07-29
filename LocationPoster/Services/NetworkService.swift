@@ -7,19 +7,34 @@
 import Foundation
 
 class NetworkService: NetworkServiceProtocol {
-    func post(locationData: LocationData, to url: String) {
-        guard let endpoint = URL(string: url) else { return }
-        var request = URLRequest(url: endpoint)
+    func post(locationData: LocationData, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let requestURL = URL(string: url) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: requestURL)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         do {
-            let json = try JSONEncoder().encode(locationData)
-            request.httpBody = json
-
-            URLSession.shared.dataTask(with: request).resume()
+            let jsonData = try JSONEncoder().encode(locationData)
+            request.httpBody = jsonData
         } catch {
-            print("POSTエラー: \(error)")
+            completion(.failure(error))
+            return
         }
+
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }.resume()
     }
+}
+
+enum NetworkError: Error {
+    case invalidURL
 }

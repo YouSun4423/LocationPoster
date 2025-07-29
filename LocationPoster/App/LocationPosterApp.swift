@@ -13,7 +13,7 @@ struct LocationPosterApp: App {
         // 本番環境 ... AppDependencyFactory.makeViewModel()
         // Mockテスト ... AppDependencyFactory.makeMockViewModel()
         WindowGroup {
-            ContentView(viewModel: AppDependencyFactory.makeMockViewModel())
+            ContentView(viewModel: AppDependencyFactory.makeViewModel())
         }
     }
 }

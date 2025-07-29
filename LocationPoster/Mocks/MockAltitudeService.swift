@@ -16,7 +16,7 @@ class MockAltitudeService: AltitudeServiceProtocol {
 
     func start() {
         didStart = true
-        currentPressure = 1013.25 // 海面気圧の例（hPa）
+        currentPressure = 101.25 // 海面気圧の例（kPa）
     }
 
     func stop() {

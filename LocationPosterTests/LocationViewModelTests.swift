@@ -13,9 +13,11 @@ final class LocationViewModelTests: XCTestCase {
         let mockLocationService = MockLocationService()
         let mockNetworkService = MockNetworkService()
         let mockUUIDProvider = MockUUIDProvider()
+        let mockAltitudeService = MockAltitudeService()
 
         let viewModel = LocationViewModel(
             locationService: mockLocationService,
+            altitudeService: mockAltitudeService,
             networkService: mockNetworkService,
             uuidProvider: mockUUIDProvider
         )

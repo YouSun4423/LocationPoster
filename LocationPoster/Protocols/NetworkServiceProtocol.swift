@@ -6,5 +6,5 @@
 //
 
 protocol NetworkServiceProtocol {
-    func post(locationData: LocationData, to url: String)
+    func post(locationData: LocationData, to url: String, completion: @escaping (Result<Void, Error>) -> Void)
 }

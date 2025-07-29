@@ -63,7 +63,13 @@ struct ContentView: View {
         } message: {
             Text("位置情報や気圧センサーの使用を許可してください。")
         }
-
+        //.alert(item: $viewModel.errorMessage) { message in
+        //    Alert(
+        //        title: Text("送信エラー"),
+        //        message: Text(message),
+        //        dismissButton: .default(Text("OK"))
+        //    )
+        //}
     }
     
     private func openAppSettings() {
@@ -72,4 +78,8 @@ struct ContentView: View {
             UIApplication.shared.open(settingsURL)
         }
     }
+}
+
+extension String: @retroactive Identifiable {
+    public var id: String { self }
 }

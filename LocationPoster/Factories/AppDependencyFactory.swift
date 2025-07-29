@@ -16,12 +16,14 @@ struct AppDependencyFactory {
             altitudeService: altitudeService
         )
         let networkService = NetworkService()
+        let uploadService = DataUploadService()
 
         return LocationViewModel(
             locationService: locationService,
             altitudeService: altitudeService,
             networkService: networkService,
-            uuidProvider: uuidProvider
+            uuidProvider: uuidProvider,
+            uploadService: uploadService
         )
     }
 
@@ -30,7 +32,8 @@ struct AppDependencyFactory {
             locationService: MockLocationService(),
             altitudeService: MockAltitudeService(),
             networkService: MockNetworkService(),
-            uuidProvider: MockUUIDProvider()
+            uuidProvider: MockUUIDProvider(),
+            uploadService: MockUploadService()
         )
     }
 }

@@ -41,6 +41,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Mocks/MockAltitudeService.swift,
+				Mocks/MockDataUploadService.swift,
 				Mocks/MockLocationService.swift,
 				Mocks/MockNetworkService.swift,
 				Mocks/MockUUIDProvider.swift,

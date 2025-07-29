@@ -12,7 +12,7 @@ class MockNetworkService: NetworkServiceProtocol {
     var didPost = false
     var lastPostedData: LocationData?
 
-    func post(locationData: LocationData, to url: String) {
+    func post(locationData: LocationData, to url: String, completion: @escaping (Result<Void, Error>) -> Void) {
         didPost = true
         lastPostedData = locationData
     }

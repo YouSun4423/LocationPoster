@@ -24,6 +24,7 @@ class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceProto
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.distanceFilter = kCLDistanceFilterNone
     }
 
     func start() {

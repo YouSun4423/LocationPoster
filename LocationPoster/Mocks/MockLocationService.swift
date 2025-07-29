@@ -23,7 +23,7 @@ class MockLocationService: LocationServiceProtocol {
             longitude: 139.0,
             altitude: 50.0,
             floor: 2,
-            pressure: 1013.25,
+            pressure: 101.25,
         )
         onUpdate?(mock)
     }
