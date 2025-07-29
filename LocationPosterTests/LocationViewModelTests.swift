@@ -9,29 +9,29 @@ import XCTest
 @testable import LocationPoster
 
 final class LocationViewModelTests: XCTestCase {
-    func testTrackingTriggersUpdateAndPost() {
+    func testTrackingTriggersUpdateAndBuffer() {
         let mockLocationService = MockLocationService()
-        let mockNetworkService = MockNetworkService()
         let mockUUIDProvider = MockUUIDProvider()
         let mockAltitudeService = MockAltitudeService()
+        let mockUploadService = MockDataUploadService()
 
         let viewModel = LocationViewModel(
             locationService: mockLocationService,
             altitudeService: mockAltitudeService,
-            networkService: mockNetworkService,
-            uuidProvider: mockUUIDProvider
+            uuidProvider: mockUUIDProvider,
+            uploadService: mockUploadService
         )
 
-        viewModel.toggleTracking()
-
-        // 少し待つ（非同期UI更新）
         let expectation = XCTestExpectation(description: "Async update")
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertTrue(viewModel.locationText.contains("TEST-UUID"))
-            XCTAssertTrue(mockNetworkService.didPost)
-            XCTAssertEqual(mockNetworkService.lastPostedData?.floor, 2)
+            XCTAssertEqual(mockUploadService.bufferedData.count, 1)
+            XCTAssertEqual(mockUploadService.bufferedData.first?.floor, 2)
             expectation.fulfill()
         }
+
+        viewModel.toggleTracking()
 
         wait(for: [expectation], timeout: 1.0)
     }

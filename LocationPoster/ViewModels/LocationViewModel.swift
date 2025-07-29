@@ -16,7 +16,6 @@ class LocationViewModel: ObservableObject {
 
     private var locationService: LocationServiceProtocol
     private let altitudeService: AltitudeServiceProtocol
-    private let networkService: NetworkServiceProtocol
     private let uuidProvider: DeviceUUIDProtocol
     private let uploadService: DataUploadServiceProtocol
     
@@ -28,13 +27,11 @@ class LocationViewModel: ObservableObject {
     init(
         locationService: LocationServiceProtocol,
         altitudeService: AltitudeServiceProtocol,
-        networkService: NetworkServiceProtocol,
         uuidProvider: DeviceUUIDProtocol,
         uploadService: DataUploadServiceProtocol
     ) {
         self.locationService = locationService
         self.altitudeService = altitudeService
-        self.networkService = networkService
         self.uuidProvider = uuidProvider
         self.uploadService = uploadService
 

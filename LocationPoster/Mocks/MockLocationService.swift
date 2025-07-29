@@ -25,7 +25,9 @@ class MockLocationService: LocationServiceProtocol {
             floor: 2,
             pressure: 101.25,
         )
-        onUpdate?(mock)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    self.onUpdate?(mock)
+                }
     }
 
     func stop() {}
