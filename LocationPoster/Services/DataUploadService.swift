@@ -43,7 +43,7 @@ class DataUploadService: DataUploadServiceProtocol {
     }
 
     private func convertToCSV(data: [LocationData]) -> String {
-        var csv = "deviceUUID,timestamp,latitude,longitude,altitude,floor,pressure\n"
+        var csv = "timestamp,deviceUUID,latitude,longitude,altitude,floor,pressure\n"
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMddHHmmss"
 
