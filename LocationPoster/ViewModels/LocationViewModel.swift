@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class LocationViewModel: ObservableObject {
     @Published var isTracking = false
@@ -18,9 +19,8 @@ class LocationViewModel: ObservableObject {
     private let altitudeService: AltitudeServiceProtocol
     private let uuidProvider: DeviceUUIDProtocol
     private let uploadService: DataUploadServiceProtocol
-    
-    private let postURL = "http://arta.exp.mnb.ees.saitama-u.ac.jp/agp/wheelchair/upload_location_atmosphere.php"
 
+    private let postURL = "http://arta.exp.mnb.ees.saitama-u.ac.jp/agp/wheelchair/upload_location_atmosphere.php"
 
     private var locationDataBuffer: [LocationData] = []
 
@@ -40,7 +40,6 @@ class LocationViewModel: ObservableObject {
             DispatchQueue.main.async {
                 self.uploadService.buffer(data: data)
                 self.locationText = self.format(data: data)
-                self.locationText = self.format(data: data)
             }
         }
 
@@ -52,11 +51,14 @@ class LocationViewModel: ObservableObject {
 
     func toggleTracking() {
         isTracking.toggle()
+
         if isTracking {
-            locationDataBuffer = [] // 開始時にバッファ初期化
+            UIApplication.shared.isIdleTimerDisabled = true // ★画面消灯防止
+            locationDataBuffer = []
             locationService.start()
             altitudeService.start()
         } else {
+            UIApplication.shared.isIdleTimerDisabled = false // ★元に戻す
             locationService.stop()
             altitudeService.stop()
             postBufferedDataAsCSV()
@@ -77,7 +79,7 @@ class LocationViewModel: ObservableObject {
         気圧[kPa]: \(altitudeService.currentPressure ?? 0.0)
         """
     }
-    
+
     private func mapErrorToMessage(_ error: Error) -> String {
         if let urlError = error as? URLError {
             switch urlError.code {
@@ -96,7 +98,7 @@ class LocationViewModel: ObservableObject {
             return "エラーが発生しました。\n(\(error.localizedDescription))"
         }
     }
-    
+
     private func postBufferedDataAsCSV() {
         uploadService.flushBufferedData(to: postURL) { [weak self] result in
             DispatchQueue.main.async {
@@ -109,5 +111,4 @@ class LocationViewModel: ObservableObject {
             }
         }
     }
-
 }
