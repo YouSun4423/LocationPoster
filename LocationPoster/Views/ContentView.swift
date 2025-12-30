@@ -33,6 +33,22 @@ struct ContentView: View {
                 .shadow(radius: 8)
                 .padding(.horizontal)
 
+                // デバッグモード切り替え
+                HStack {
+                    Image(systemName: viewModel.isDebugMode ? "ladybug.fill" : "ladybug")
+                        .foregroundColor(viewModel.isDebugMode ? .orange : .gray)
+                    Text("デバッグモード")
+                        .font(.body)
+                        .foregroundColor(.black)
+                    Spacer()
+                    Toggle("", isOn: $viewModel.isDebugMode)
+                        .labelsHidden()
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(12)
+                .padding(.horizontal)
+
                 Button(action: {
                     viewModel.toggleTracking()
                 }) {
@@ -51,6 +67,13 @@ struct ContentView: View {
                 }
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.isTracking)
+
+                if viewModel.isDebugMode {
+                    Text("デバッグモード有効: データはサーバーに送信されません")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                        .padding(.horizontal)
+                }
 
                 Spacer()
             }
