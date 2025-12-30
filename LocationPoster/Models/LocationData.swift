@@ -15,4 +15,13 @@ struct LocationData: Encodable {
     let altitude: Double
     let floor: Int?
     let pressure: Double?
+
+    // ビーコン関連フィールド
+    let beaconUUID: String?
+    let beaconMajor: Int?
+    let beaconMinor: Int?
+    let beaconRSSI: Int?
+    let beaconProximity: String?
+    let beaconAccuracy: Double?
+    let correlationID: String?
 }
