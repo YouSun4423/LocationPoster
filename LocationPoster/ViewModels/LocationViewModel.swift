@@ -14,17 +14,18 @@ class LocationViewModel: ObservableObject {
     @Published var locationText: String = "未取得"
     @Published var errorMessage: String? = nil
     @Published var isDebugMode = false  // デバッグモード
+    @Published var beaconList: [BeaconData] = []  // ビーコンリスト
 
     private var locationService: LocationServiceProtocol
     private let altitudeService: AltitudeServiceProtocol
-    private let beaconService: BeaconServiceProtocol
+    private var beaconService: BeaconServiceProtocol
     private let uuidProvider: DeviceUUIDProtocol
     private let uploadService: DataUploadServiceProtocol
     private let beaconConfig: BeaconConfigurationProtocol
 
     private let postURL = "http://arta.exp.mnb.ees.saitama-u.ac.jp/agp/wheelchair/upload_location_atmosphere.php"
 
-
+    private var latestLocationData: LocationData?
     private var locationDataBuffer: [LocationData] = []
 
     init(
@@ -46,8 +47,25 @@ class LocationViewModel: ObservableObject {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 self.uploadService.buffer(data: data)
-                self.locationText = self.format(data: data)
-                self.locationText = self.format(data: data)
+
+                // ビーコンなしのデータの場合のみlocationTextを更新
+                if data.beaconUUID == nil {
+                    self.latestLocationData = data
+                    self.locationText = self.format(data: data)
+                }
+            }
+        }
+
+        // ビーコン更新ハンドラを設定
+        self.beaconService.onBeaconsUpdate = { [weak self] beacons in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.beaconList = beacons
+
+                // 最新の位置情報があればlocationTextも更新
+                if let locationData = self.latestLocationData {
+                    self.locationText = self.format(data: locationData)
+                }
             }
         }
 
