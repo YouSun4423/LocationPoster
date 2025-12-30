@@ -24,6 +24,13 @@ class MockLocationService: LocationServiceProtocol {
             altitude: 50.0,
             floor: 2,
             pressure: 101.25,
+            beaconUUID: nil,
+            beaconMajor: nil,
+            beaconMinor: nil,
+            beaconRSSI: nil,
+            beaconProximity: nil,
+            beaconAccuracy: nil,
+            correlationID: nil
         )
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     self.onUpdate?(mock)

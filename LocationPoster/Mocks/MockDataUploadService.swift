@@ -9,7 +9,7 @@ import Foundation
 
 class MockDataUploadService: DataUploadServiceProtocol {
     var bufferedData: [LocationData] = []
-    
+
     func buffer(data: LocationData) {
         print("Mock buffer called with data: \(data)")
         bufferedData.append(data)
@@ -18,5 +18,13 @@ class MockDataUploadService: DataUploadServiceProtocol {
     func flushBufferedData(to urlString: String, completion: @escaping (Result<Void, Error>) -> Void) {
         print("Mock flush to: \(urlString)")
         completion(.success(()))
+    }
+
+    func getBufferedCSV() -> String {
+        return "Mock CSV data"
+    }
+
+    func clearBuffer() {
+        bufferedData = []
     }
 }
