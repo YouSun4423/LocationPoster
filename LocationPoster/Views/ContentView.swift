@@ -3,6 +3,8 @@ import UIKit
 
 struct ContentView: View {
     @ObservedObject var viewModel: LocationViewModel
+    @State private var tapCount = 0
+    @State private var showDebugToggle = false
 
     var body: some View {
         ZStack {
@@ -12,6 +14,21 @@ struct ContentView: View {
                 endPoint: .bottomTrailing
             )
             .edgesIgnoringSafeArea(.all)
+
+            // 左端の隠しタップ領域
+            HStack {
+                Color.clear
+                    .frame(width: 50)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        tapCount += 1
+                        if tapCount >= 10 {
+                            showDebugToggle = true
+                            tapCount = 0
+                        }
+                    }
+                Spacer()
+            }
 
             VStack(spacing: 24) {
                 Text("位置情報・気圧トラッカー")
@@ -33,21 +50,24 @@ struct ContentView: View {
                 .shadow(radius: 8)
                 .padding(.horizontal)
 
-                // デバッグモード切り替え
-                HStack {
-                    Image(systemName: viewModel.isDebugMode ? "ladybug.fill" : "ladybug")
-                        .foregroundColor(viewModel.isDebugMode ? .orange : .gray)
-                    Text("デバッグモード")
-                        .font(.body)
-                        .foregroundColor(.black)
-                    Spacer()
-                    Toggle("", isOn: $viewModel.isDebugMode)
-                        .labelsHidden()
+                // デバッグモード切り替え（隠し機能）
+                if showDebugToggle {
+                    HStack {
+                        Image(systemName: viewModel.isDebugMode ? "ladybug.fill" : "ladybug")
+                            .foregroundColor(viewModel.isDebugMode ? .orange : .gray)
+                        Text("デバッグモード")
+                            .font(.body)
+                            .foregroundColor(.black)
+                        Spacer()
+                        Toggle("", isOn: $viewModel.isDebugMode)
+                            .labelsHidden()
+                    }
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(12)
+                    .padding(.horizontal)
+                    .transition(.opacity)
                 }
-                .padding()
-                .background(.ultraThinMaterial)
-                .cornerRadius(12)
-                .padding(.horizontal)
 
                 Button(action: {
                     viewModel.toggleTracking()
@@ -68,7 +88,7 @@ struct ContentView: View {
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.isTracking)
 
-                if viewModel.isDebugMode {
+                if showDebugToggle && viewModel.isDebugMode {
                     Text("デバッグモード有効: データはサーバーに送信されません")
                         .font(.caption)
                         .foregroundColor(.orange)
@@ -78,6 +98,7 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(.bottom, 40)
+            .animation(.easeInOut(duration: 0.3), value: showDebugToggle)
         }.alert("アプリの使用に権限が必要です", isPresented: $viewModel.isPermissionDenied) {
             Button("設定を開く") {
                 openAppSettings()
