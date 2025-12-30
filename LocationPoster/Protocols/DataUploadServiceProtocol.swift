@@ -8,4 +8,6 @@
 protocol DataUploadServiceProtocol {
     func buffer(data: LocationData)
     func flushBufferedData(to urlString: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func getBufferedCSV() -> String  // デバッグ用: CSV文字列を取得
+    func clearBuffer()  // デバッグ用: バッファをクリア
 }

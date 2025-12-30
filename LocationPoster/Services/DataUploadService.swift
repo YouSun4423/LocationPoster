@@ -42,8 +42,16 @@ class DataUploadService: DataUploadServiceProtocol {
         }.resume()
     }
 
+    func getBufferedCSV() -> String {
+        return convertToCSV(data: buffer)
+    }
+
+    func clearBuffer() {
+        buffer = []
+    }
+
     private func convertToCSV(data: [LocationData]) -> String {
-        var csv = "deviceUUID,timestamp,latitude,longitude,altitude,floor,pressure\n"
+        var csv = "deviceUUID,timestamp,latitude,longitude,altitude,floor,pressure,beaconUUID,beaconMajor,beaconMinor,beaconRSSI,beaconProximity,beaconAccuracy,correlationID\n"
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyyMMddHHmmss"
 
@@ -55,7 +63,14 @@ class DataUploadService: DataUploadServiceProtocol {
                 "\(entry.longitude)",
                 "\(entry.altitude)",
                 "\(entry.floor ?? -1)",
-                "\(entry.pressure ?? 0)"
+                "\(entry.pressure ?? 0)",
+                entry.beaconUUID ?? "",
+                entry.beaconMajor != nil ? "\(entry.beaconMajor!)" : "",
+                entry.beaconMinor != nil ? "\(entry.beaconMinor!)" : "",
+                entry.beaconRSSI != nil ? "\(entry.beaconRSSI!)" : "",
+                entry.beaconProximity ?? "",
+                entry.beaconAccuracy != nil ? "\(entry.beaconAccuracy!)" : "",
+                entry.correlationID ?? ""
             ].joined(separator: ",")
             csv += line + "\n"
         }
