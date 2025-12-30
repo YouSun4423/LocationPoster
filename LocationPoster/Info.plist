@@ -8,6 +8,10 @@
         <string>バックグラウンドでも位置情報を取得するために使用します。</string>
         <key>NSMotionUsageDescription</key>
         <string>気圧を取得して現在地の情報を正確に把握するために使用します。</string>
+        <key>NSBluetoothAlwaysUsageDescription</key>
+        <string>Bluetoothを使用してビーコンを検出し、位置情報の精度を向上させます。</string>
+        <key>NSBluetoothPeripheralUsageDescription</key>
+        <string>Bluetoothを使用してビーコンを検出します。</string>
         <key>NSAppTransportSecurity</key>
         <dict>
             <key>NSExceptionDomains</key>
