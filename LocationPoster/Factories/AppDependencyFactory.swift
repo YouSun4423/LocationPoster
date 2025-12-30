@@ -11,9 +11,12 @@ struct AppDependencyFactory {
     static func makeViewModel() -> LocationViewModel {
         let uuidProvider = DeviceUUIDService()
         let altitudeService = AltitudeService()
+        let beaconConfig = BeaconConfigurationService()
+        let beaconService = BeaconService()
         let locationService = LocationService(
             uuidProvider: uuidProvider,
-            altitudeService: altitudeService
+            altitudeService: altitudeService,
+            beaconService: beaconService
         )
         let uploadService = DataUploadService()
 
@@ -21,7 +24,9 @@ struct AppDependencyFactory {
             locationService: locationService,
             altitudeService: altitudeService,
             uuidProvider: uuidProvider,
-            uploadService: uploadService
+            uploadService: uploadService,
+            beaconService: beaconService,
+            beaconConfig: beaconConfig
         )
     }
 
@@ -30,7 +35,9 @@ struct AppDependencyFactory {
             locationService: MockLocationService(),
             altitudeService: MockAltitudeService(),
             uuidProvider: MockUUIDProvider(),
-            uploadService: MockDataUploadService()
+            uploadService: MockDataUploadService(),
+            beaconService: MockBeaconService(),
+            beaconConfig: MockBeaconConfiguration()
         )
     }
 }
