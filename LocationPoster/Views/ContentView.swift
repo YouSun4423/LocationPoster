@@ -107,13 +107,18 @@ struct ContentView: View {
         } message: {
             Text("位置情報や気圧センサーの使用を許可してください。")
         }
-        //.alert(item: $viewModel.errorMessage) { message in
-        //    Alert(
-        //        title: Text("送信エラー"),
-        //        message: Text(message),
-        //        dismissButton: .default(Text("OK"))
-        //    )
-        //}
+        .alert("送信エラー", isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
+        }
     }
     
     private func openAppSettings() {

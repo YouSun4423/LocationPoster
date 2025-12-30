@@ -55,6 +55,17 @@ class LocationViewModel: ObservableObject {
         if status == .denied {
             self.isPermissionDenied = true
         }
+
+        // 前回セッションからの保留中アップロードをリトライ
+        if let offlineQueue = (uploadService as? DataUploadService)?.offlineQueue {
+            Task {
+                // アプリの初期化を待つため2秒遅延
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                await MainActor.run {
+                    retryPendingUploads(offlineQueue: offlineQueue)
+                }
+            }
+        }
     }
 
     func toggleTracking() {
@@ -156,6 +167,51 @@ class LocationViewModel: ObservableObject {
                 }
             }
         }
+    }
+
+    func retryPendingUploads(offlineQueue: OfflineQueueManagerProtocol) {
+        let pendingUploads = offlineQueue.getPendingUploads()
+
+        guard !pendingUploads.isEmpty else {
+            print("[ViewModel] リトライする保留中のアップロードはありません")
+            return
+        }
+
+        print("[ViewModel] 🔄 \(pendingUploads.count)件の保留中アップロードをリトライ中...")
+
+        for upload in pendingUploads {
+            // 試行回数制限チェック
+            guard upload.attemptCount < 10 else {
+                print("[ViewModel] ⚠️ アップロード\(upload.id)は最大試行回数を超えました")
+                offlineQueue.remove(uploadID: upload.id)
+                continue
+            }
+
+            retryPersistedUpload(upload, offlineQueue: offlineQueue)
+        }
+    }
+
+    private func retryPersistedUpload(_ upload: PersistedUpload, offlineQueue: OfflineQueueManagerProtocol) {
+        guard let url = URL(string: upload.destinationURL) else {
+            offlineQueue.remove(uploadID: upload.id)
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("text/csv", forHTTPHeaderField: "Content-Type")
+        request.httpBody = upload.csvData.data(using: .utf8)
+        request.timeoutInterval = 30.0
+
+        URLSession.shared.dataTask(with: request) { [weak self] _, _, error in
+            if let error = error {
+                print("[ViewModel] ⚠️ アップロード\(upload.id)のリトライ失敗: \(error.localizedDescription)")
+                offlineQueue.incrementAttemptCount(uploadID: upload.id)
+            } else {
+                print("[ViewModel] ✅ アップロード\(upload.id)のリトライ成功")
+                offlineQueue.remove(uploadID: upload.id)
+            }
+        }.resume()
     }
 
 }

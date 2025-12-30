@@ -9,6 +9,11 @@ import Foundation
 
 class MockDataUploadService: DataUploadServiceProtocol {
     var bufferedData: [LocationData] = []
+    var offlineQueue: OfflineQueueManagerProtocol?
+
+    init(offlineQueue: OfflineQueueManagerProtocol? = nil) {
+        self.offlineQueue = offlineQueue
+    }
 
     func buffer(data: LocationData) {
         print("Mock buffer called with data: \(data)")

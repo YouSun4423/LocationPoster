@@ -18,7 +18,8 @@ struct AppDependencyFactory {
             altitudeService: altitudeService,
             beaconService: beaconService
         )
-        let uploadService = DataUploadService()
+        let offlineQueue = OfflineQueueManager()
+        let uploadService = DataUploadService(offlineQueue: offlineQueue)
 
         return LocationViewModel(
             locationService: locationService,
